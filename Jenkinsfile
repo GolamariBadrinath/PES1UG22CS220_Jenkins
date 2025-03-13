@@ -20,9 +20,9 @@ pipeline {
                     # Ensure we fetch the latest changes
                     git fetch origin ${BRANCH}
                     
-                    # Checkout main branch explicitly to avoid detached HEAD
-                    git checkout ${BRANCH}
-                    git pull origin ${BRANCH} 
+                    # Force checkout the branch to avoid ambiguity
+                    git checkout -B ${BRANCH} origin/${BRANCH}
+                    git pull origin ${BRANCH}
 
                     # Create and commit the new file
                     echo '#include <iostream>\nint main() { std::cout << "Hello, Jenkins!" << std::endl; return 0; }' > ${FILE_NAME}
