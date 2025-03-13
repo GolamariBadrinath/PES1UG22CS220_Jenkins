@@ -19,7 +19,8 @@ pipeline {
                     echo '#include <iostream>\nint main() { std::cout << "Hello, Jenkins!" << std::endl; return 0; }' > ${FILE_NAME}
                     git add ${FILE_NAME}
                     git commit -m "Adding new C++ file"
-                    git push ${REPO_URL} ${BRANCH}
+                    git branch -M ${BRANCH}  # Ensure branch is named correctly
+                    git push origin ${BRANCH}
                     '''
                 }
             }
