@@ -3,8 +3,8 @@ pipeline {
     
     environment {
         REPO_URL = 'https://github.com/GolamariBadrinath/PES1UG22CS220_Jenkins'
-        BRANCH = 'main' // Ensure you're on the correct branch
-        CPP_FILE = 'new.cpp'  // Compile existing new.cpp
+        BRANCH = 'main'
+        CPP_FILE = 'new_invalid.cpp'  // Intentional error: Wrong filename
         BUILD_OUTPUT = 'new_program'
         SRN = 'PES1UG22CS220'
     }
@@ -26,7 +26,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh "g++ ${CPP_FILE} -o ${BUILD_OUTPUT}"
+                    sh "g++ ${CPP_FILE} -o ${BUILD_OUTPUT}"  // This should fail
                 }
             }
         }
@@ -51,7 +51,7 @@ pipeline {
     
     post {
         failure {
-            echo 'Pipeline failed'
+            echo 'Pipeline failed'  // Should be executed when build fails
         }
         success {
             echo 'Pipeline completed successfully'
