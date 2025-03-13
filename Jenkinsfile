@@ -16,10 +16,13 @@ pipeline {
                     sh '''
                     git config user.email "golamaribadrinath@gmail.com"
                     git config user.name "GolamariBadrinath"
+
+                    # Ensure we fetch the latest changes
+                    git fetch origin ${BRANCH}
                     
-                    # Ensure we're on the correct branch and avoid ambiguity
-                    git fetch origin main
-                    git reset --hard origin/main
+                    # Checkout main branch explicitly to avoid detached HEAD
+                    git checkout ${BRANCH}
+                    git pull origin ${BRANCH} 
 
                     # Create and commit the new file
                     echo '#include <iostream>\nint main() { std::cout << "Hello, Jenkins!" << std::endl; return 0; }' > ${FILE_NAME}
@@ -27,7 +30,7 @@ pipeline {
                     git commit -m "Adding new C++ file"
 
                     # Push changes to the main branch
-                    git push origin main
+                    git push origin ${BRANCH}
                     '''
                 }
             }
