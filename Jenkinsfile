@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         REPO_URL = 'https://github.com/GolamariBadrinath/PES1UG22CS220_Jenkins'
-        BRANCH = 'main' // Change this if needed
+        BRANCH = 'main' // Push directly to main
         FILE_NAME = 'new_file.cpp'
         BUILD_OUTPUT = 'PES1UG22CS220-1'
         SRN = 'PES1UG22CS220'
@@ -16,11 +16,17 @@ pipeline {
                     sh '''
                     git config user.email "golamaribadrinath@gmail.com"
                     git config user.name "GolamariBadrinath"
+                    
+                    # Ensure we are on the main branch
+                    git checkout main
+                    
+                    # Create and commit the new file
                     echo '#include <iostream>\nint main() { std::cout << "Hello, Jenkins!" << std::endl; return 0; }' > ${FILE_NAME}
                     git add ${FILE_NAME}
                     git commit -m "Adding new C++ file"
-                    git branch -M ${BRANCH}  # Ensure branch is named correctly
-                    git push origin ${BRANCH}
+
+                    # Push changes to the main branch
+                    git push origin main
                     '''
                 }
             }
