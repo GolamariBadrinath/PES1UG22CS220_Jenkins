@@ -10,26 +10,16 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                script {
-                    sh 'git clone ${REPO_URL} repo'
-                    sh 'cd repo && git checkout ${BRANCH}'
-                }
-            }
-        }
-        
         stage('Create & Push New .cpp File') {
             steps {
                 script {
                     sh '''
-                    cd repo
                     git config user.email "golamaribadrinath@gmail.com"
                     git config user.name "GolamariBadrinath"
                     echo '#include <iostream>\nint main() { std::cout << "Hello, Jenkins!" << std::endl; return 0; }' > ${FILE_NAME}
                     git add ${FILE_NAME}
                     git commit -m "Adding new C++ file"
-                    git push origin ${BRANCH}
+                    git push ${REPO_URL} ${BRANCH}
                     '''
                 }
             }
@@ -38,7 +28,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh "g++ repo/${FILE_NAME} -o ${BUILD_OUTPUT}"
+                    sh "g++ ${FILE_NAME} -o ${BUILD_OUTPUT}"
                 }
             }
         }
