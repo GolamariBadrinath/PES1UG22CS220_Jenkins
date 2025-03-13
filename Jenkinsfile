@@ -3,34 +3,21 @@ pipeline {
     
     environment {
         REPO_URL = 'https://github.com/GolamariBadrinath/PES1UG22CS220_Jenkins'
-        BRANCH = 'main' // Push directly to main
-        FILE_NAME = 'new_file.cpp'
-        BUILD_OUTPUT = 'PES1UG22CS220-1'
+        BRANCH = 'main' // Ensure you're on the correct branch
+        CPP_FILE = 'new.cpp'  // Compile existing new.cpp
+        BUILD_OUTPUT = 'new_program'
         SRN = 'PES1UG22CS220'
     }
 
     stages {
-        stage('Create & Push New .cpp File') {
+        stage('Checkout Code') {
             steps {
                 script {
                     sh '''
                     git config user.email "golamaribadrinath@gmail.com"
                     git config user.name "GolamariBadrinath"
-
-                    # Ensure we fetch the latest changes
                     git fetch origin ${BRANCH}
-                    
-                    # Force checkout the branch to avoid ambiguity
-                    git checkout -B ${BRANCH} origin/${BRANCH}
-                    git pull origin ${BRANCH}
-
-                    # Create and commit the new file
-                    echo '#include <iostream>\nint main() { std::cout << "Hello, Jenkins!" << std::endl; return 0; }' > ${FILE_NAME}
-                    git add ${FILE_NAME}
-                    git commit -m "Adding new C++ file"
-
-                    # Push changes to the main branch
-                    git push origin ${BRANCH}
+                    git reset --hard origin/${BRANCH}
                     '''
                 }
             }
@@ -39,7 +26,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh "g++ ${FILE_NAME} -o ${BUILD_OUTPUT}"
+                    sh "g++ ${CPP_FILE} -o ${BUILD_OUTPUT}"
                 }
             }
         }
