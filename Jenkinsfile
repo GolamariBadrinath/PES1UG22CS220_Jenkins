@@ -24,6 +24,8 @@ pipeline {
                 script {
                     sh '''
                     cd repo
+                    git config user.email "golamaribadrinath@gmail.com"
+                    git config user.name "GolamariBadrinath"
                     echo '#include <iostream>\nint main() { std::cout << "Hello, Jenkins!" << std::endl; return 0; }' > ${FILE_NAME}
                     git add ${FILE_NAME}
                     git commit -m "Adding new C++ file"
