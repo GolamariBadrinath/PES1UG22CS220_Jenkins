@@ -17,9 +17,10 @@ pipeline {
                     git config user.email "golamaribadrinath@gmail.com"
                     git config user.name "GolamariBadrinath"
                     
-                    # Ensure we are on the main branch
-                    git checkout main
-                    
+                    # Ensure we're on the correct branch and avoid ambiguity
+                    git fetch origin main
+                    git reset --hard origin/main
+
                     # Create and commit the new file
                     echo '#include <iostream>\nint main() { std::cout << "Hello, Jenkins!" << std::endl; return 0; }' > ${FILE_NAME}
                     git add ${FILE_NAME}
